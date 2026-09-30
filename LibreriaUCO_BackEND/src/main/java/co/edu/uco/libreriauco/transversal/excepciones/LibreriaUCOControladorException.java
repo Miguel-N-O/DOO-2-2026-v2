@@ -1,5 +1,4 @@
 package co.edu.uco.libreriauco.transversal.excepciones;
-
 import co.edu.uco.libreriauco.transversal.excepciones.enums.Capa;
 
 public class LibreriaUCOControladorException extends LibreriaUCOExcepcion {
@@ -25,7 +24,7 @@ public class LibreriaUCOControladorException extends LibreriaUCOExcepcion {
 	
 	public static LibreriaUCOExcepcion crear(String mensajeUsuario, String mensajeTecnico, Exception excepcionRaiz) {
 		
-		return new LibreriaUCOControladorException(mensajeUsuario, mensajeTecnico, new Exception(excepcionRaiz));
+		return new LibreriaUCOControladorException(mensajeUsuario, mensajeTecnico, excepcionRaiz);
 	}
 	
 }

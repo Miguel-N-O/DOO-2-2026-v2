@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import co.edu.uco.libreriauco.dao.datos.entidad.DepartamentoDAO;
 import co.edu.uco.libreriauco.dao.datos.entidad.PaisDAO;
+import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes.UtilSQL;
 
 public abstract class DAOFactory {
 
@@ -25,20 +26,20 @@ public abstract class DAOFactory {
 	protected abstract void  abrirConexion();
 	
 	public void cerrarConexion() {
-		//TAREA: COMO SE CIERRA LA CONEXION DE FORMA SEGURA
+	co.edu.uco.libreriauco.transversal.utilitarios.UtilSQL.cerrarConexion(conexion);;
 	}
 
 	public void iniciarTransaccion() {
-		//TAREA: COMO SE INICIA UNA TRANSACCION DE FORMA SEGURA ?
+		co.edu.uco.libreriauco.transversal.utilitarios.UtilSQL.iniciarTransaccion(conexion);
 	}
 	
 	public void cancelarTransaccion() {
-		//TAREA: COMO SE CANCELA UNA TRANSACCION DE FORMA SEGURA ?
+		co.edu.uco.libreriauco.transversal.utilitarios.UtilSQL.cancelarTransaccion(conexion);
 	}
 	
 	
 	public void confirmarTransaccion() {
-		//TAREA: COMO SE CONFIRMA UNA TRANSACCION DE FORMA SEGURA ?
+		co.edu.uco.libreriauco.transversal.utilitarios.UtilSQL.confirmarTransaccion(conexion);
 	}
 	
 	public abstract PaisDAO obtenerPaisDAO();
