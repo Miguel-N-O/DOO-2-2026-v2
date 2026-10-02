@@ -27,8 +27,13 @@ public class CatalogoMensajes {
 		public static final String USUARIO_ERROR_NO_ES_POSIBLE_CERRAR_CONEXION_SQL = "No es posible finalizar de manera adecuada la operación deseada, debido a que la conexión contra la fuente de información que se intentó cerrar ya se encuentra cerrada o está vacía. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicación y reporte la novedad...";
 	}
 	
-	public static class PaisNegocioImp{
-		private PaisNegocio
+	public static class PaisNegocioImpl {
+		private PaisNegocioImpl() {
+	
+		}
+		
+		public	static final String PAIS_EXISTE_CON_EL_MISMO_NOMBRE_DE_PAIS_A_CREAR = "Ya existe otro pais con el nombre con el cual se desea crear el pais deseado.";
+		
 	}
 	
 }

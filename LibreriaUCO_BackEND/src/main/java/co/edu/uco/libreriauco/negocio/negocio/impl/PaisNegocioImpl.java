@@ -8,6 +8,9 @@ import co.edu.uco.libreriauco.dominio.PaisDominio;
 import co.edu.uco.libreriauco.entidad.PaisEntidad;
 import co.edu.uco.libreriauco.negocio.negocio.PaisNegocio;
 import co.edu.uco.libreriauco.negocio.negocio.asembler.Impl.PaisEntidadAssembler;
+import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
+import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioException;
+import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOTransversalExeption;
 
 public class PaisNegocioImpl implements PaisNegocio {
 	
@@ -20,8 +23,8 @@ public class PaisNegocioImpl implements PaisNegocio {
 
 	@Override
 	public void registrarInformacionNuevoPais(PaisDominio datos) {
-		aegurarDatosRegistroNuevoPaisValidos(datos);
-		aegurarNombreNuevoPaisNoExista(datos.getNombre());
+		asegurarDatosRegistroPaisValidos(datos);
+		asegurarNombreRegistroPaisNoExista(datos.getNombre());
 
 		
 		var paisEntidad = PaisEntidadAssembler.getInstance().convertirAEntidad(datos);
@@ -31,18 +34,18 @@ public class PaisNegocioImpl implements PaisNegocio {
 	}
 	
 	private void asegurarDatosRegistroPaisValidos(PaisDominio datos) {
-		
+
 	}
 	
 	private void asegurarNombreRegistroPaisNoExista(String nombrePais) {
 		var entidadFiltro = new PaisEntidad();
 		entidadFiltro.setNombre(nombrePais);
 		
-		var resultado = daoFactory.obtenerPaisDAO().consultarPorFiltro(entidadFiltro);
+		var resultados = daoFactory.obtenerPaisDAO().consultarPorFiltro(entidadFiltro);
 		
-		if(!resultado.isEmpty()) {
-			var mensajeUsuario = CatalogocMensajes.PaisNegocioImpl.PaisNegocioImp
-			
+		if(!resultados.isEmpty()) {
+			var mensajeUsuario = CatalogoMensajes.PaisNegocioImpl.PAIS_EXISTE_CON_EL_MISMO_NOMBRE_DE_PAIS_A_CREAR;
+			throw LibreriaUCONegocioException.crear(mensajeUsuario);
 		}
 	}
 	

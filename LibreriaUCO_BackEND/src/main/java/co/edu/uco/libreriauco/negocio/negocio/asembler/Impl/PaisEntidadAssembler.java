@@ -22,7 +22,7 @@ public class PaisEntidadAssembler implements EntidadAssembler<PaisDominio, PaisE
 	public PaisEntidad convertirAEntidad(PaisDominio dominio) {
 		var dominioTmp = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(dominio, new PaisDominio.Builder().build());
 		
-		return new PaisEntidad(dominioTmp.getId(), dominioTmp, dominioTmp.getNombre());
+		return new PaisEntidad(dominioTmp.getId(), dominioTmp.getNombre());
 	}
 
 	@Override
