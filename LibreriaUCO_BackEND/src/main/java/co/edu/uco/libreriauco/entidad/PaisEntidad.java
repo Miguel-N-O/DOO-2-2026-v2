@@ -10,10 +10,18 @@ public class PaisEntidad {
 	private String nombre;
 	
 	public PaisEntidad() {
-	setId(null);
+	setId(UtilUUID.obtenerUUIDDefecto());
 	setNombre(UtilTexto.VACIO);
 	}
 
+	public PaisEntidad(UUID id, String nombre) {
+	setId(id);
+	setNombre(nombre);
+	}
+
+	
+	
+	
 	public UUID getId() {
 		return id;
 	}
