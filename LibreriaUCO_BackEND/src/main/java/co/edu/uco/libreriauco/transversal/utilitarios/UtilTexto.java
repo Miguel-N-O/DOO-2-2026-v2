@@ -4,6 +4,7 @@ public class UtilTexto {
 	
 	private static UtilTexto INSTANCIA;
 	public static String VACIO = "";
+	public static final String SOLO_LETRAS_ESPACIOS = "^[a-zA-Z ñÑáÁéÉóÓúÚ]*$";
 	
 	private UtilTexto() {
 	}
@@ -59,4 +60,11 @@ public class UtilTexto {
 				&& obtenerLongitudCadena(valorSanitizado) <= longitudFinal;
 		
 	}
+	
+	public boolean formatoEsvalido(String valor, String patron) {
+		return obtenerValorDefecto(valor).matches(obtenerValorDefecto(patron));
+	
+	
+	}
+	
 }

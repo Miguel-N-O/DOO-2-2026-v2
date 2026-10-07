@@ -8,6 +8,7 @@ import co.edu.uco.libreriauco.dominio.PaisDominio;
 import co.edu.uco.libreriauco.entidad.PaisEntidad;
 import co.edu.uco.libreriauco.negocio.negocio.PaisNegocio;
 import co.edu.uco.libreriauco.negocio.negocio.asembler.Impl.PaisEntidadAssembler;
+import co.edu.uco.libreriauco.negocio.negocio.reglas.impl.pais.AsegurarNombrePaisNoExistaRule;
 import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioException;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOTransversalExeption;
@@ -26,6 +27,8 @@ public class PaisNegocioImpl implements PaisNegocio {
 		asegurarDatosRegistroPaisValidos(datos);
 		asegurarNombreRegistroPaisNoExista(datos.getNombre());
 
+		
+		AsegurarNombrePaisNoExistaRule.obtenerInstancia().ejecutar(datos.getNombre(), daoFactory);
 		
 		var paisEntidad = PaisEntidadAssembler.getInstance().convertirAEntidad(datos);
 		paisEntidad.setId(generarIdDePaisUnico());
