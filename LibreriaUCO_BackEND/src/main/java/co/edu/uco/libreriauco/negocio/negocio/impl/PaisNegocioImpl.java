@@ -5,13 +5,11 @@ import java.util.UUID;
 
 import co.edu.uco.libreriauco.dao.factoria.DAOFactory;
 import co.edu.uco.libreriauco.dominio.PaisDominio;
-import co.edu.uco.libreriauco.entidad.PaisEntidad;
 import co.edu.uco.libreriauco.negocio.negocio.PaisNegocio;
 import co.edu.uco.libreriauco.negocio.negocio.asembler.Impl.PaisEntidadAssembler;
-import co.edu.uco.libreriauco.negocio.negocio.reglas.impl.pais.AsegurarNombrePaisNoExistaRule;
-import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
-import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioException;
-import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOTransversalExeption;
+import co.edu.uco.libreriauco.negocio.negocio.reglas.impl.pais.AsegurarNombreNuevoPaisNoExistaRule;
+import co.edu.uco.libreriauco.negocio.negocio.reglas.impl.pais.ValidarDatosRegistrarInformacionNuevoPaisRule;
+
 
 public class PaisNegocioImpl implements PaisNegocio {
 	
@@ -24,33 +22,20 @@ public class PaisNegocioImpl implements PaisNegocio {
 
 	@Override
 	public void registrarInformacionNuevoPais(PaisDominio datos) {
-		asegurarDatosRegistroPaisValidos(datos);
-		asegurarNombreRegistroPaisNoExista(datos.getNombre());
+		ValidarDatosRegistrarInformacionNuevoPaisRule.obtenerInstancia().ejecutar(datos);
+		AsegurarNombreNuevoPaisNoExistaRule.obtenerInstancia().ejecutar(datos.getNombre(), daoFactory);
 
-		
-		AsegurarNombrePaisNoExistaRule.obtenerInstancia().ejecutar(datos.getNombre(), daoFactory);
 		
 		var paisEntidad = PaisEntidadAssembler.getInstance().convertirAEntidad(datos);
 		paisEntidad.setId(generarIdDePaisUnico());
-		
-		daoFactory.obtenerPaisDAO().crear(paisEntidad);
-	}
-	
-	private void asegurarDatosRegistroPaisValidos(PaisDominio datos) {
 
+		daoFactory.obtenerPaisDAO().crear(paisEntidad);
+
+		// RulePattern, Validator Pattern, Specification Pattern
+		// Cómo valido con Rule Pattern y Specification Pattern
 	}
 	
-	private void asegurarNombreRegistroPaisNoExista(String nombrePais) {
-		var entidadFiltro = new PaisEntidad();
-		entidadFiltro.setNombre(nombrePais);
-		
-		var resultados = daoFactory.obtenerPaisDAO().consultarPorFiltro(entidadFiltro);
-		
-		if(!resultados.isEmpty()) {
-			var mensajeUsuario = CatalogoMensajes.PaisNegocioImpl.PAIS_EXISTE_CON_EL_MISMO_NOMBRE_DE_PAIS_A_CREAR;
-			throw LibreriaUCONegocioException.crear(mensajeUsuario);
-		}
-	}
+	
 	
 	private UUID generarIdDePaisUnico() {
 		return UUID.randomUUID();
