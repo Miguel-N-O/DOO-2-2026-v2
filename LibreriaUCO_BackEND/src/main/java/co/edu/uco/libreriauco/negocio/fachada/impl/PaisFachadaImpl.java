@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.libreriauco.dao.factoria.DAOFactory;
+import co.edu.uco.libreriauco.dominio.PaisDominio;
 import co.edu.uco.libreriauco.dto.PaisDTO;
 import co.edu.uco.libreriauco.negocio.fachada.PaisFachada;
+import co.edu.uco.libreriauco.negocio.fachada.assembler.impl.PaisDTOAssembler;
 import co.edu.uco.libreriauco.negocio.negocio.PaisNegocio;
 import co.edu.uco.libreriauco.negocio.negocio.impl.PaisNegocioImpl;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOExcepcion;
+import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOFachadaException;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioException;
 
 public class PaisFachadaImpl implements PaisFachada {
@@ -28,7 +31,8 @@ public class PaisFachadaImpl implements PaisFachada {
 		daoFactory.iniciarTransaccion();
 		
 		try {
-			paisNegocio.registrarInformacionNuevoPais(PaisDominio);
+			var paisDominio = PaisDTOAssembler.getInstance().convertirADominio(datos);
+			paisNegocio.registrarInformacionNuevoPais(paisDominio);
 			daoFactory.confirmarTransaccion();
 		} catch (LibreriaUCOExcepcion excepcion) {
 			daoFactory.cancelarTransaccion();
@@ -37,7 +41,7 @@ public class PaisFachadaImpl implements PaisFachada {
 			daoFactory.cancelarTransaccion();
 			
 			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de registar la inforamcion del nuevo pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
-			throw LibreriaUCONegocioException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
 		}finally {
 			daoFactory.cerrarConexion();
 		}
@@ -49,7 +53,8 @@ public class PaisFachadaImpl implements PaisFachada {
 		daoFactory.iniciarTransaccion();
 		
 		try {
-			paisNegocio.modificarInformacionPaisExistente(id, PaisDominio);
+			var paisDominio = PaisDTOAssembler.getInstance().convertirADominio(datos);
+			paisNegocio.modificarInformacionPaisExistente(id , paisDominio);
 			daoFactory.confirmarTransaccion();
 		} catch (LibreriaUCOExcepcion excepcion) {
 			daoFactory.cancelarTransaccion();
@@ -58,7 +63,7 @@ public class PaisFachadaImpl implements PaisFachada {
 			daoFactory.cancelarTransaccion();
 			
 			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de modificar la inforamcion del nuevo pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
-			throw LibreriaUCONegocioException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
 		}finally {
 			daoFactory.cerrarConexion();
 		}
@@ -79,7 +84,16 @@ public class PaisFachadaImpl implements PaisFachada {
 	@Override
 	public List<PaisDTO> ConsultarTodos() {
 		try {
+			var listaPaisesDominio = paisNegocio.ConsultarTodos();
+			return PaisDTOAssembler.getInstance().convertirADTO(listaPaisesDominio);
+		} catch (LibreriaUCOExcepcion excepcion) {
+			throw excepcion;
+		}catch (Exception exeption) {
 			
+			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar la inforamcion de todos los pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+		}finally {
+			daoFactory.cerrarConexion();
 		}
 	}
 
