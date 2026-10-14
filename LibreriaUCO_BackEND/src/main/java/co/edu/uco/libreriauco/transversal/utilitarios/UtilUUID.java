@@ -33,5 +33,8 @@ public final class UtilUUID {
 	public static String obtenerValorDefectoComoTexto(final String valor) {
 		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(valor, UUID_DEFECTO_TEXTO);
 	}
-	
+
+	public static String generarComoTexto() {
+		 return generar().toString().toLowerCase();
+	 }
 }
