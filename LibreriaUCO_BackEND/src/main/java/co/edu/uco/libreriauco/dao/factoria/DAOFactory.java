@@ -6,6 +6,7 @@ import co.edu.uco.libreriauco.dao.datos.entidad.DepartamentoDAO;
 import co.edu.uco.libreriauco.dao.datos.entidad.PaisDAO;
 import co.edu.uco.libreriauco.dao.factoria.enums.FactoriaEnum;
 import co.edu.uco.libreriauco.dao.factoria.impl.SqlServerDAOFactory;
+import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCODatosException;
 import co.edu.uco.libreriauco.transversal.utilitarios.UtilSQL;
 
@@ -21,7 +22,7 @@ public abstract class DAOFactory {
 			return new SqlServerDAOFactory();
 						
 		default:
-			var mensajeUsuario = "La fuente de información deseada que se solxicitó para llevar a cabo la poperación no está habilitada. Por favor contacte el administrador de la aplicación";
+			var mensajeUsuario = CatalogoMensajes.DAOFactory.USUARIO_ERROR_FUENTE_INFORMACION_NO_HABILITADA;
 			throw LibreriaUCODatosException.crear(mensajeUsuario);
 		}
 	}
@@ -37,6 +38,7 @@ public abstract class DAOFactory {
 
 	public void setConexion(Connection conexion) {
 		// TAREA: ASEGURAR QUE LA CONEXIÓN ESTÉ ABIERTA Y SEA VÁLIDA
+		UtilSQL.asegurarConexionAbierta(conexion);
 		this.conexion = conexion;
 	}
 

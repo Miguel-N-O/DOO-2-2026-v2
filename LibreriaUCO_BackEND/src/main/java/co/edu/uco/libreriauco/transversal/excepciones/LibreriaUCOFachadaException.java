@@ -10,7 +10,6 @@ public class LibreriaUCOFachadaException extends LibreriaUCOExcepcion {
 	private LibreriaUCOFachadaException(String mensajeUsuario, String mensajeTecnico,
 			Exception excepcionRaiz) {
 		super(Capa.FACHADA, mensajeUsuario, mensajeTecnico, excepcionRaiz);
-		// TODO Auto-generated constructor stub
 	}
 	
 	

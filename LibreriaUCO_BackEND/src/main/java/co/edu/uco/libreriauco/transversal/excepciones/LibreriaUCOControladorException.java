@@ -8,7 +8,6 @@ public class LibreriaUCOControladorException extends LibreriaUCOExcepcion {
 	private LibreriaUCOControladorException(String mensajeUsuario, String mensajeTecnico,
 			Exception excepcionRaiz) {
 		super(Capa.CONTROLADOR, mensajeUsuario, mensajeTecnico, excepcionRaiz);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static LibreriaUCOExcepcion crear(String mensajeUsuario) {

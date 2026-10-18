@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import co.edu.uco.libreriauco.controlador.respuesta.RespuestaError;
+import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOExcepcion;
 import co.edu.uco.libreriauco.transversal.utilitarios.UtilUUID;
 
@@ -15,9 +16,6 @@ public abstract class AbstractRestController {
 	
 	@ExceptionHandler(LibreriaUCOExcepcion.class)
 	public ResponseEntity<RespuestaError<String>> controlarLibreriaUcoException(LibreriaUCOExcepcion excepcion) {
-		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "Se ha presentado un problema inesperado tratando de llevar a cabo la operacion deseada. Por favot intetente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo que se muestra a continuacion"
-				.concat(correlationId);
 		var respuesta = RespuestaError.crear(excepcion.getMensajeUsuario());
 		
 		// logger.printException(Exception);
@@ -25,10 +23,10 @@ public abstract class AbstractRestController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
 	}
 	
-	@ExceptionHandler(LibreriaUCOExcepcion.class)
-	public ResponseEntity<RespuestaError<String>> controlarLibreriaUcoException(Exception excepcion) {
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<RespuestaError<String>> controlarException(Exception excepcion) {
 		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "Se ha presentado un problema inesperado tratando de llevar a cabo la operacion deseada. Por favot intetente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo"
+		var mensajeRespuesta = CatalogoMensajes.AbstractRestController.USUARIO_ERROR_PROBLEMA_INESPERADO
 				.concat(correlationId);
 		var respuesta = RespuestaError.crear(mensajeRespuesta);
 		
@@ -41,7 +39,7 @@ public abstract class AbstractRestController {
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity<RespuestaError<String>> controlarNotResourceFoundExeption(NoResourceFoundException excepcion) {
 		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta =  ("ojo mono"+excepcion.getResourcePath()+"Por el metodo: " +excepcion.getHttpMethod())
+		var mensajeRespuesta = CatalogoMensajes.AbstractRestController.USUARIO_ERROR_RECURSO_NO_ENCONTRADO
 				.concat(correlationId);
 		var respuesta = RespuestaError.crear(mensajeRespuesta);
 		

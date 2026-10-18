@@ -8,7 +8,6 @@ public class LibreriaUCONegocioException extends LibreriaUCOExcepcion {
 
 	private LibreriaUCONegocioException(String mensajeUsuario, String mensajeTecnico,Exception excepcionRaiz) {
 		super(Capa.NEGOCIO, mensajeUsuario, mensajeTecnico, excepcionRaiz);
-		// TODO Auto-generated constructor stub
 	}
 	
 	

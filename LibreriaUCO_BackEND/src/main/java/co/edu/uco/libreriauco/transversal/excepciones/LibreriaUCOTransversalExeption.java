@@ -9,7 +9,6 @@ public class LibreriaUCOTransversalExeption extends LibreriaUCOExcepcion{
 	private LibreriaUCOTransversalExeption(String mensajeUsuario, String mensajeTecnico,
 			Exception excepcionRaiz) {
 		super(Capa.TRANSVERSAL, mensajeUsuario, mensajeTecnico, excepcionRaiz);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static LibreriaUCOExcepcion crear(String mensajeUsuario) {

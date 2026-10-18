@@ -9,7 +9,6 @@ public class LibreriaUCODominioExeption extends LibreriaUCOExcepcion {
 	private LibreriaUCODominioExeption(String mensajeUsuario, String mensajeTecnico,
 			Exception excepcionRaiz) {
 		super(Capa.DOMINIO, mensajeUsuario, mensajeTecnico, excepcionRaiz);
-		// TODO Auto-generated constructor stub
 	}
 
 

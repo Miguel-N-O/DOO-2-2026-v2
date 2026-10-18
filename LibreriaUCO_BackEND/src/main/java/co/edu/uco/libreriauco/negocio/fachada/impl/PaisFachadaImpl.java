@@ -10,6 +10,7 @@ import co.edu.uco.libreriauco.negocio.fachada.PaisFachada;
 import co.edu.uco.libreriauco.negocio.fachada.assembler.impl.PaisDTOAssembler;
 import co.edu.uco.libreriauco.negocio.negocio.PaisNegocio;
 import co.edu.uco.libreriauco.negocio.negocio.impl.PaisNegocioImpl;
+import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOExcepcion;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCOFachadaException;
 import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioException;
@@ -40,7 +41,7 @@ public class PaisFachadaImpl implements PaisFachada {
 		}catch (Exception exeption) {
 			daoFactory.cancelarTransaccion();
 			
-			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de registar la inforamcion del nuevo pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_REGISTRANDO_INFORMACION_NUEVO_PAIS;
 			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
 		}finally {
 			daoFactory.cerrarConexion();
@@ -62,7 +63,7 @@ public class PaisFachadaImpl implements PaisFachada {
 		}catch (Exception exeption) {
 			daoFactory.cancelarTransaccion();
 			
-			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de modificar la inforamcion del nuevo pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_MODIFICANDO_INFORMACION_PAIS_EXISTENTE;
 			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
 		}finally {
 			daoFactory.cerrarConexion();
@@ -71,14 +72,39 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public void darbajaPaisExistente(UUID id) {
-		// TODO Auto-generated method stub
+		daoFactory.iniciarTransaccion();
 		
+		try {
+			paisNegocio.darbajaPaisExistente(id);
+			daoFactory.confirmarTransaccion();
+		} catch (LibreriaUCOExcepcion excepcion) {
+			daoFactory.cancelarTransaccion();
+			throw excepcion;
+		}catch (Exception exeption) {
+			daoFactory.cancelarTransaccion();
+			
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_DANDO_BAJA_PAIS_EXISTENTE;
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+		}finally {
+			daoFactory.cerrarConexion();
+		}
 	}
 
 	@Override
 	public List<PaisDTO> ConsultarPorFiltro(PaisDTO filtro) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			var paisDominioFiltro = PaisDTOAssembler.getInstance().convertirADominio(filtro);
+			var listaPaisesDominio = paisNegocio.ConsultarPorFiltro(paisDominioFiltro);
+			return PaisDTOAssembler.getInstance().convertirADTO(listaPaisesDominio);
+		} catch (LibreriaUCOExcepcion excepcion) {
+			throw excepcion;
+		}catch (Exception exeption) {
+			
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_CONSULTANDO_PAISES_POR_FILTRO;
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+		}finally {
+			daoFactory.cerrarConexion();
+		}
 	}
 
 	@Override
@@ -90,7 +116,7 @@ public class PaisFachadaImpl implements PaisFachada {
 			throw excepcion;
 		}catch (Exception exeption) {
 			
-			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar la inforamcion de todos los pais deseado. Por Favot intente de nuevo y si el problema persiste contante al administrador de la apliacion";
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_CONSULTANDO_TODOS_LOS_PAISES;
 			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
 		}finally {
 			daoFactory.cerrarConexion();
@@ -99,8 +125,18 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public List<PaisDTO> ConsultarPorID(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			var listaPaisesDominio = paisNegocio.ConsultarPorID(id);
+			return PaisDTOAssembler.getInstance().convertirADTO(listaPaisesDominio);
+		} catch (LibreriaUCOExcepcion excepcion) {
+			throw excepcion;
+		}catch (Exception exeption) {
+			
+			var mensajeUsuario = CatalogoMensajes.PaisFachadaImpl.USUARIO_ERROR_PROBLEMA_NO_CONTROLADO_CONSULTANDO_PAIS_POR_ID;
+			throw LibreriaUCOFachadaException.crear(mensajeUsuario, exeption.getMessage(), exeption);
+		}finally {
+			daoFactory.cerrarConexion();
+		}
 	}
 
 }
