@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.uco.libreriauco.controlador.AbstractRestController;
 import co.edu.uco.libreriauco.controlador.respuesta.RespuestaOk;
 import co.edu.uco.libreriauco.dto.PaisDTO;
+import co.edu.uco.libreriauco.negocio.fachada.PaisFachada;
 import co.edu.uco.libreriauco.negocio.fachada.impl.PaisFachadaImpl;
 import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 
@@ -24,47 +26,123 @@ import co.edu.uco.libreriauco.transversal.catalogo.CatalogoMensajes;
 @RequestMapping("/api/v1/paises")
 public class PaisControlador extends AbstractRestController {
 	
-	@GetMapping
-	public ResponseEntity<RespuestaOk<PaisDTO>> ConsultarTodos() {
-		var paisFachada = new PaisFachadaImpl();
-		var paises = paisFachada.ConsultarTodos();
-		
-		var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAISES_CONSULTADOS_EXITOSAMENTE), paises);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	private PaisFachada fachada = new PaisFachadaImpl();
+	
+	@GetMapping("/dummy")
+	public PaisDTO obtenerDummy() {
+		return new PaisDTO();
 	}
+	
+	
 	
 	@PostMapping
-	public ResponseEntity<RespuestaOk<PaisDTO>> registrarInformacionNuevoPais(@RequestBody PaisDTO datos) {
-		var paisFachada = new PaisFachadaImpl();
-		paisFachada.registrarInformacionNuevoPais(datos);
-		
-		var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_REGISTRADO_EXITOSAMENTE), List.<PaisDTO>of());
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+	public ResponseEntity<RespuestaOk<String>> registrarInformacionNuevoPais(@RequestBody PaisDTO pais) {
+		fachada.registrarInformacionNuevoPais(pais);
+		var listaMensajes = List.of();
+		RespuestaOk<String> respuesta = RespuestaOk
+				.crear("Se ha registrado la información del nuevo país de forma exitosa.");
+		return ResponseEntity.ok(respuesta);
 	}
 	
-	@PutMapping
-	public ResponseEntity<RespuestaOk<PaisDTO>> modificarInformacionPaisExistente(@RequestParam UUID id, @RequestBody PaisDTO datos) {
-		var paisFachada = new PaisFachadaImpl();
-		paisFachada.modificarInformacionPaisExistente(id, datos);
+
+	
+	//Flat params INVESTIGAR
+	
+	@GetMapping	("/{id}")
+	public ResponseEntity<RespuestaOk<PaisDTO>> ConsultarId(@PathVariable UUID id) {
+		var pais = fachada.ConsultarPorID(id);
 		
-		var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_MODIFICADO_EXITOSAMENTE), List.<PaisDTO>of());
+		RespuestaOk<PaisDTO> respuesta = RespuestaOk.crear(pais);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+		return ResponseEntity.ok(respuesta);
+		
 	}
 	
-	@DeleteMapping
-	public ResponseEntity<RespuestaOk<PaisDTO>> darbajaPaisExistente(@RequestParam UUID id) {
+	//.......//api/v1/paises?id=valor&nombre=Colombia
+	//.......//api/v1/paises?id=valor
+	//.......//api/v1/paises?nombre=Colombia
+	//.......//api/v1/paises?nombre=Colombia&id=valor
+	//.......//api/v1/paises
+	//.......//api/v1/paises?paisResidencia = valor BAD PRACTICE
+	//.......//api/v1/paises?pais-Residencia = valor BEST PRACTICE
+	
+	
+	@GetMapping	
+	public ResponseEntity<RespuestaOk<PaisDTO>> consultaroPorFiltro(PaisDTO filtro) {
+		var paises = fachada.ConsultarPorFiltro(filtro);
+		
+		RespuestaOk<PaisDTO> respuesta = RespuestaOk.crear(paises);
+		
+		return ResponseEntity.ok(respuesta);
+		
+	}
+	
+	
+	@PutMapping ("/{id}")
+	public ResponseEntity<RespuestaOk<String>> modificarInformacionPaisExistente(@RequestParam UUID id, @RequestBody PaisDTO datos){
+		
+		fachada.modificarInformacionPaisExistente(id, datos);
+		RespuestaOk<String> respuesta = RespuestaOk
+				.crear("Se ha modificado la información del nuevo país de forma exitosa.");
+		return ResponseEntity.ok(respuesta);
+		
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<RespuestaOk<String>> darbajaPaisExistente(@RequestParam UUID id) {
 		var paisFachada = new PaisFachadaImpl();
 		paisFachada.darbajaPaisExistente(id);
 		
-		var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_DADO_DE_BAJA_EXITOSAMENTE), List.<PaisDTO>of());
+		RespuestaOk<String> respuesta = RespuestaOk
+				.crear("Se ha modificado la información del nuevo país de forma exitosa.");
+		return ResponseEntity.ok(respuesta);
+	}
+	
+	
+	//@PostMapping
+	//public ResponseEntity<RespuestaOk<PaisDTO>> registrarInformacionNuevoPais(@RequestBody PaisDTO datos) {
+	//	var paisFachada = new PaisFachadaImpl();
+		//paisFachada.registrarInformacionNuevoPais(datos);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_REGISTRADO_EXITOSAMENTE), List.<PaisDTO>of());
+		
+		//return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+	//}
+	
+	
+	//@GetMapping	
+	//public ResponseEntity<RespuestaOk<PaisDTO>> ConsultarTodos() {
+		//var paisFachada = new PaisFachadaImpl();
+		//var paises = paisFachada.ConsultarTodos();
+		
+		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAISES_CONSULTADOS_EXITOSAMENTE), paises);
+		
+//		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	//}
+	
+
+	
+	//@PutMapping
+	//public ResponseEntity<RespuestaOk<PaisDTO>> modificarInformacionPaisExistente(@RequestParam UUID id, @RequestBody PaisDTO datos) {
+		//var paisFachada = new PaisFachadaImpl();
+		//paisFachada.modificarInformacionPaisExistente(id, datos);
+		
+		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_MODIFICADO_EXITOSAMENTE), List.<PaisDTO>of());
+		
+		//return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	//}
+	
+	//@DeleteMapping
+	//public ResponseEntity<RespuestaOk<PaisDTO>> darbajaPaisExistente(@RequestParam UUID id) {
+		//var paisFachada = new PaisFachadaImpl();
+		//paisFachada.darbajaPaisExistente(id);
+		
+	//	var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_DADO_DE_BAJA_EXITOSAMENTE), List.<PaisDTO>of());
+		
+		//return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 	}
 
-}
+
 
 
 
