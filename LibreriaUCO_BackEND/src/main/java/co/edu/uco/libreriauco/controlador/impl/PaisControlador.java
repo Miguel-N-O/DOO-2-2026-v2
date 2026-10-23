@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.libreriauco.controlador.AbstractRestController;
@@ -89,7 +88,7 @@ public class PaisControlador extends AbstractRestController {
 	
 	
 	@PutMapping ("/{id}")
-	public ResponseEntity<RespuestaOk<String>> modificarInformacionPaisExistente(@RequestParam UUID id, @RequestBody PaisDTO datos){
+	public ResponseEntity<RespuestaOk<String>> modificarInformacionPaisExistente(@PathVariable UUID id, @RequestBody PaisDTO datos){
 		
 		fachada.modificarInformacionPaisExistente(id, datos);
 		RespuestaOk<String> respuesta = RespuestaOk
@@ -99,7 +98,7 @@ public class PaisControlador extends AbstractRestController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<RespuestaOk<String>> darbajaPaisExistente(@RequestParam UUID id) {
+	public ResponseEntity<RespuestaOk<String>> darbajaPaisExistente(@PathVariable UUID id) {
 		var paisFachada = new PaisFachadaImpl();
 		paisFachada.darbajaPaisExistente(id);
 		

@@ -17,18 +17,11 @@ import co.edu.uco.libreriauco.transversal.excepciones.LibreriaUCONegocioExceptio
 
 public class PaisFachadaImpl implements PaisFachada {
 	
-	private DAOFactory daoFactory;
-	private PaisNegocio paisNegocio;
-	
-	public PaisFachadaImpl() {
-		daoFactory = DAOFactory.obtenerFactoria();
-		paisNegocio = new PaisNegocioImpl(daoFactory);
-			
-		}
-		
-
 	@Override
 	public void registrarInformacionNuevoPais(PaisDTO datos) {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		daoFactory.iniciarTransaccion();
 		
 		try {
@@ -51,6 +44,9 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public void modificarInformacionPaisExistente(UUID id, PaisDTO datos) {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		daoFactory.iniciarTransaccion();
 		
 		try {
@@ -72,6 +68,9 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public void darbajaPaisExistente(UUID id) {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		daoFactory.iniciarTransaccion();
 		
 		try {
@@ -92,6 +91,9 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public List<PaisDTO> ConsultarPorFiltro(PaisDTO filtro) {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		try {
 			var paisDominioFiltro = PaisDTOAssembler.getInstance().convertirADominio(filtro);
 			var listaPaisesDominio = paisNegocio.ConsultarPorFiltro(paisDominioFiltro);
@@ -109,6 +111,9 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public List<PaisDTO> ConsultarTodos() {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		try {
 			var listaPaisesDominio = paisNegocio.ConsultarTodos();
 			return PaisDTOAssembler.getInstance().convertirADTO(listaPaisesDominio);
@@ -125,6 +130,9 @@ public class PaisFachadaImpl implements PaisFachada {
 
 	@Override
 	public List<PaisDTO> ConsultarPorID(UUID id) {
+		DAOFactory daoFactory = DAOFactory.obtenerFactoria();
+		PaisNegocio paisNegocio = new PaisNegocioImpl(daoFactory);
+
 		try {
 			var listaPaisesDominio = paisNegocio.ConsultarPorID(id);
 			return PaisDTOAssembler.getInstance().convertirADTO(listaPaisesDominio);
