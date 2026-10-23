@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,15 @@ public class PaisControlador extends AbstractRestController {
 	
 	
 	
+	@GetMapping("/login")
+	public String hacerLogin(@AuthenticationPrincipal OidcUser datosUsuario) {
+		return "Hola Usuario %s. Te has autenticado con el correo %s. Su token es %S".
+				formatted(datosUsuario.getFullName(), datosUsuario.getEmail(), datosUsuario.getIdToken().getTokenValue());
+	}
+	
+	
+	
+	
 	@PostMapping
 	public ResponseEntity<RespuestaOk<String>> registrarInformacionNuevoPais(@RequestBody PaisDTO pais) {
 		fachada.registrarInformacionNuevoPais(pais);
@@ -55,9 +66,8 @@ public class PaisControlador extends AbstractRestController {
 		RespuestaOk<PaisDTO> respuesta = RespuestaOk.crear(pais);
 		
 		return ResponseEntity.ok(respuesta);
+		}
 		
-	}
-	
 	//.......//api/v1/paises?id=valor&nombre=Colombia
 	//.......//api/v1/paises?id=valor
 	//.......//api/v1/paises?nombre=Colombia
@@ -98,54 +108,7 @@ public class PaisControlador extends AbstractRestController {
 		return ResponseEntity.ok(respuesta);
 	}
 	
-	
-	//@PostMapping
-	//public ResponseEntity<RespuestaOk<PaisDTO>> registrarInformacionNuevoPais(@RequestBody PaisDTO datos) {
-	//	var paisFachada = new PaisFachadaImpl();
-		//paisFachada.registrarInformacionNuevoPais(datos);
-		
-		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_REGISTRADO_EXITOSAMENTE), List.<PaisDTO>of());
-		
-		//return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
-	//}
-	
-	
-	//@GetMapping	
-	//public ResponseEntity<RespuestaOk<PaisDTO>> ConsultarTodos() {
-		//var paisFachada = new PaisFachadaImpl();
-		//var paises = paisFachada.ConsultarTodos();
-		
-		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAISES_CONSULTADOS_EXITOSAMENTE), paises);
-		
-//		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-	//}
-	
-
-	
-	//@PutMapping
-	//public ResponseEntity<RespuestaOk<PaisDTO>> modificarInformacionPaisExistente(@RequestParam UUID id, @RequestBody PaisDTO datos) {
-		//var paisFachada = new PaisFachadaImpl();
-		//paisFachada.modificarInformacionPaisExistente(id, datos);
-		
-		//var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_MODIFICADO_EXITOSAMENTE), List.<PaisDTO>of());
-		
-		//return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-	//}
-	
-	//@DeleteMapping
-	//public ResponseEntity<RespuestaOk<PaisDTO>> darbajaPaisExistente(@RequestParam UUID id) {
-		//var paisFachada = new PaisFachadaImpl();
-		//paisFachada.darbajaPaisExistente(id);
-		
-	//	var respuesta = RespuestaOk.crear(List.of(CatalogoMensajes.PaisControlador.PAIS_DADO_DE_BAJA_EXITOSAMENTE), List.<PaisDTO>of());
-		
-		//return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-	}
-
-
-
-
-
+}	
 
 //investigar Richardson Maturity Model The Glory of Rest 
 //TLS 1.3
