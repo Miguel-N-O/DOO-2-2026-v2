@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<title>Países | LibreriaUCO</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<link th:href="@{/css/estilos.css}" href="/css/estilos.css" rel="stylesheet">
+</head>
+<body>
+	<header class="bg-libreria">
+		<nav class="navbar navbar-dark container">
+			<a class="navbar-brand fw-bold fs-4" th:href="@{/paises}" href="/paises">LibreriaUCO</a>
+			<div class="d-flex flex-wrap align-items-center gap-3">
+				<a class="nav-link text-white fw-semibold border-bottom border-2 border-white" th:href="@{/paises}" href="/paises">Países</a>
+				<span class="text-libreria-suave" th:text="${nombreUsuario}">Usuario</span>
+				<form th:action="@{/logout}" action="/logout" method="post" class="m-0">
+					<button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+				</form>
+			</div>
+		</nav>
+	</header>
+
+	<main class="container py-4">
+		<h1 class="h3 fw-semibold text-libreria mb-1">Países</h1>
+		<p class="text-secondary mb-4">Registre, consulte, modifique o dé de baja los países de la librería.</p>
+
+		<div id="mensaje" class="alert d-none" role="alert"></div>
+
+		<div class="row g-4 align-items-start">
+			<div class="col-lg-4">
+				<form id="formularioPais" class="card card-body p-4" novalidate>
+					<h2 id="tituloFormulario" class="h5 fw-semibold text-libreria mb-3">Registrar país</h2>
+					<div class="mb-3">
+						<label for="nombre" class="form-label">Nombre *</label>
+						<input id="nombre" type="text" class="form-control" maxlength="50" placeholder="Ej: Colombia" autocomplete="off">
+						<div class="form-text">Solo letras y espacios, de 1 a 50 caracteres.</div>
+						<div id="nombreError" class="invalid-feedback"></div>
+					</div>
+					<div class="d-flex gap-2">
+						<button id="botonGuardar" type="submit" class="btn btn-libreria flex-grow-1">Registrar</button>
+						<button id="botonCancelar" type="button" class="btn btn-outline-secondary">Limpiar</button>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-8">
+				<section class="card card-body p-4">
+					<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+						<h2 class="h5 fw-semibold text-libreria m-0">Países registrados</h2>
+						<form id="formularioBuscar" class="d-flex flex-wrap gap-2 buscador" role="search">
+							<label for="buscar" class="visually-hidden">Buscar por nombre</label>
+							<input id="buscar" type="search" class="form-control" maxlength="50" placeholder="Nombre exacto" autocomplete="off">
+							<button type="submit" class="btn btn-outline-libreria">Buscar</button>
+							<button id="botonConsultarTodos" type="button" class="btn btn-outline-secondary text-nowrap">Consultar todos los países registrados</button>
+						</form>
+					</div>
+					<div class="table-responsive">
+						<table class="table align-middle mb-2">
+							<thead class="table-light">
+								<tr>
+									<th scope="col">Nombre</th>
+									<th scope="col" class="text-end">Acciones</th>
+								</tr>
+							</thead>
+							<tbody id="cuerpoTabla"></tbody>
+						</table>
+					</div>
+					<small id="contadorPaises" class="text-secondary"></small>
+				</section>
+			</div>
+		</div>
+	</main>
+
+	<dialog id="dialogoBaja" class="dialogo-baja" aria-labelledby="tituloBaja">
+		<h2 id="tituloBaja" class="h5 fw-semibold mb-3">¿Dar de baja este país?</h2>
+		<p class="mb-4">Se dará de baja el país <strong id="nombrePaisBaja"></strong>. Esta acción no se puede deshacer.</p>
+		<div class="d-flex justify-content-end gap-2">
+			<button id="botonCancelarBaja" type="button" class="btn btn-outline-secondary">Cancelar</button>
+			<button id="botonConfirmarBaja" type="button" class="btn btn-danger">Dar de baja</button>
+		</div>
+	</dialog>
+
+	<footer class="bg-libreria text-libreria-suave text-center py-3 small">© 2026 LibreriaUCO</footer>
+	<script th:src="@{/js/paises.js}" src="/js/paises.js"></script>
+</body>
+</html>

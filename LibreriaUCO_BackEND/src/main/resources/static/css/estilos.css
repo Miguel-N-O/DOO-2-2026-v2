@@ -1,0 +1,79 @@
+:root {
+	--libreria-verde: #1f4e3d;
+	--libreria-verde-oscuro: #163a2d;
+	--libreria-texto-suave: #d5e3dc;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: #f6f7f9;
+}
+
+main {
+	flex-grow: 1;
+}
+
+.bg-libreria {
+	background-color: var(--libreria-verde);
+}
+
+.text-libreria {
+	color: var(--libreria-verde);
+}
+
+.text-libreria-suave {
+	color: var(--libreria-texto-suave);
+}
+
+.btn-libreria {
+	background-color: var(--libreria-verde);
+	border-color: var(--libreria-verde);
+	color: #ffffff;
+}
+
+.btn-libreria:hover,
+.btn-libreria:focus,
+.btn-libreria:active {
+	background-color: var(--libreria-verde-oscuro);
+	border-color: var(--libreria-verde-oscuro);
+	color: #ffffff;
+}
+
+.btn-outline-libreria {
+	border-color: var(--libreria-verde);
+	color: var(--libreria-verde);
+}
+
+.btn-outline-libreria:hover,
+.btn-outline-libreria:focus,
+.btn-outline-libreria:active {
+	background-color: var(--libreria-verde);
+	border-color: var(--libreria-verde);
+	color: #ffffff;
+}
+
+.formulario-edicion {
+	border: 2px solid var(--libreria-verde);
+}
+
+.buscador {
+	flex: 1 1 16rem;
+	max-width: 40rem;
+}
+
+.buscador input {
+	flex: 1 1 12rem;
+}
+
+.dialogo-baja {
+	width: min(28rem, calc(100% - 2rem));
+	border: none;
+	border-radius: 0.6rem;
+	padding: 1.5rem;
+}
+
+.dialogo-baja::backdrop {
+	background-color: rgba(15, 23, 20, 0.55);
+}
