@@ -103,7 +103,7 @@ public class PaisControlador extends AbstractRestController {
 		paisFachada.darbajaPaisExistente(id);
 		
 		RespuestaOk<String> respuesta = RespuestaOk
-				.crear("Se ha modificado la información del nuevo país de forma exitosa.");
+				.crear("Se ha dado de baja el país de forma exitosa.");
 		return ResponseEntity.ok(respuesta);
 	}
 	

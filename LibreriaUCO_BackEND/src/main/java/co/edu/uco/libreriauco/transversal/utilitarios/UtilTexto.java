@@ -4,7 +4,7 @@ public class UtilTexto {
 	
 	private static UtilTexto INSTANCIA;
 	public static String VACIO = "";
-	public static final String SOLO_LETRAS_ESPACIOS = "^[a-zA-Z ñÑáÁéÉóÓúÚ]*$";
+	public static final String SOLO_LETRAS_ESPACIOS = "^[a-zA-Z ñÑáÁéÉíÍóÓúÚ]*$";
 	
 	private UtilTexto() {
 	}
