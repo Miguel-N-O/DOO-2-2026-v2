@@ -125,6 +125,9 @@ public class CatalogoMensajes {
 		
 		public static final String USUARIO_ERROR_PROBLEMA_INESPERADO = "Se ha presentado un problema inesperado tratando de llevar a cabo la operación deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicación y entréguele el siguiente código: ";
 		public static final String USUARIO_ERROR_RECURSO_NO_ENCONTRADO = "El recurso que se intentó utilizar no existe. Por favor verifique la dirección y el método de la petición y si el problema persiste contacte al administrador de la aplicación y entréguele el siguiente código: ";
+		public static final String TECNICO_ADVERTENCIA_EXCEPCION_CONTROLADA = "Se presentó una excepción controlada en la capa {}: {}";
+		public static final String TECNICO_ERROR_PROBLEMA_INESPERADO = "Se presentó una excepción no controlada. Código de seguimiento: {}";
+		public static final String TECNICO_ADVERTENCIA_RECURSO_NO_ENCONTRADO = "Se solicitó un recurso que no existe: {} {}. Código de seguimiento: {}";
 		
 	}
 	
